@@ -12,14 +12,19 @@ you can do a low power attack with a higher chance of hitting
 
 
 struct AttackAction {
-    int avgDamage;
+    float avgDamage;
+    int numberOfDice;
+    int dieSize;
+
+    
     float hitChance; 
 };
 
-struct Enemy {
-    
+struct StateOfEnemy {
+    int hp;
+};
 
-
+/*
 struct State {
     struct Action availableActions[5];
     // have to assign size of array which is a bit goof
@@ -27,20 +32,36 @@ struct State {
     // can help to act as a performance filter
     // ideally find a better way but c hates dynamic arrays
 };
+*/
+// struct State states[] = {};
 
-struct State states[] = {};
-
+/*
 State transition(State currentState, Action action) {
     State nextState = ...;
     return nextState;
 }
+*/
+
 
 
 int main() {
     printf("hello \n");
-    struct Action action1 = {1};
-    struct Action action2 = {2} ;
-    
-    struct State state1 = {{action1, action2}};
+    struct Action heavyAttack = {
+        .avgDamage = 6.5,
+        .amountOfDice = 1,
+        .dieSize = 12,
+        .hitChance = 0.50
+    };
+    struct Action lightAttack = {
+        .avgDamage = 3.5,
+        .amountOfDice = 1,
+        .dieSize = 6, 
+        .hitChance = 0.75
+    };
+    struct Enemy testEnemy = {
+        .hp = 10
+    };
+
+ 
     return 0;
 }
