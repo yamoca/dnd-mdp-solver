@@ -24,26 +24,6 @@ struct StateOfEnemy {
     int hp;
 };
 
-/*
-struct State {
-    struct Action availableActions[5];
-    // have to assign size of array which is a bit goof
-    // shouldnt have more than 5 actions
-    // can help to act as a performance filter
-    // ideally find a better way but c hates dynamic arrays
-};
-*/
-// struct State states[] = {};
-
-/*
-State transition(State currentState, Action action) {
-    State nextState = ...;
-    return nextState;
-}
-*/
-
-
-
 int main() {
     printf("hello \n");
     struct Action heavyAttack = {
