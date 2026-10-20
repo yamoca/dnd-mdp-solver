@@ -1,4 +1,6 @@
 #include <stdio.h>
+#include <stdlib.h>
+#include <time.h>
 
 /*
 
@@ -17,30 +19,62 @@ struct AttackAction {
     int dieSize;
 
     
-    float hitChance; 
+    int hitChance; // x/100 is easier than a decimal
 };
 
 struct StateOfEnemy {
     int hp;
 };
 
+int roll(int numberOfDice, int dieSize) {
+    int total = 0;
+    for (int i = 0; i < numberOfDice; i++) {
+        total += ((rand() % dieSize) + 1); //+1 is because min of rand is 0
+    }
+    return total;
+}
+
+
+struct StateOfEnemy transition(struct StateOfEnemy prevEnemyState, struct AttackAction attack) {
+    // check for a hit
+    if (((rand() % 100) + 1) <= attack.hitChance) {
+        // hit
+        printf("hit!\n");
+        int damage = roll(attack.numberOfDice, attack.dieSize);
+        struct StateOfEnemy newEnemyState = {
+            .hp = prevEnemyState.hp - damage
+        };
+        return newEnemyState;
+    } else {
+        printf("miss!\n");
+        // miss: nothing happened, return unchanged state
+        return prevEnemyState;
+    }
+}
+
+
 int main() {
-    printf("hello \n");
-    struct Action heavyAttack = {
+    // seed rand
+    srand(time(NULL));
+    
+    struct AttackAction heavyAttack = {
         .avgDamage = 6.5,
-        .amountOfDice = 1,
+        .numberOfDice = 1,
         .dieSize = 12,
-        .hitChance = 0.50
+        .hitChance = 50
     };
-    struct Action lightAttack = {
+    struct AttackAction lightAttack = {
         .avgDamage = 3.5,
-        .amountOfDice = 1,
+        .numberOfDice = 1,
         .dieSize = 6, 
-        .hitChance = 0.75
+        .hitChance = 75
     };
-    struct Enemy testEnemy = {
-        .hp = 10
+    struct StateOfEnemy testEnemy = {
+        .hp = 1
     };
+    
+    struct StateOfEnemy testEnemyAfter = transition(testEnemy, lightAttack);
+    printf("after a light attack, the health of the enemy was: %d\n", testEnemyAfter.hp);    
 
  
     return 0;
